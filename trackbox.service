@@ -1,0 +1,13 @@
+[Unit]
+Description=Trackbox GPIO switch reader
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/trackbox
+Restart=on-failure
+RestartSec=5
+User=trackbox
+
+[Install]
+WantedBy=multi-user.target
