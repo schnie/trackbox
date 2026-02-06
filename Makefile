@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 PI_HOST := trackbox@trackbox
 PI_DEST := ~/trackbox
 
