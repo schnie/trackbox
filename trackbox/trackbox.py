@@ -12,7 +12,7 @@ switches = {
     10: "FIRM",      # GPIO10  (physical pin 19)
     9:  "HARD",      # GPIO9   (physical pin 21)
     11: "SOFT",      # GPIO11  (physical pin 23)
-    0:  "YIELDING",  # GPIO0   (physical pin 27) ← newly added
+    0:  "YIELDING",  # GPIO0   (physical pin 27)
 }
 
 

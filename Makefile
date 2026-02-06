@@ -3,16 +3,25 @@ SHELL := /bin/bash
 PI_HOST := trackbox@trackbox
 PI_DEST := ~/trackbox
 
-.PHONY: install install-service deploy dev clean run
+.PHONY: install uninstall install-service uninstall-service deploy dev clean run
 
 install:
-	pip install --user .
+	sudo pip install --break-system-packages --root-user-action=ignore .
+
+uninstall:
+	sudo pip uninstall --break-system-packages -y trackbox
 
 install-service:
 	sudo cp trackbox.service /etc/systemd/system/
 	sudo systemctl daemon-reload
 	sudo systemctl enable trackbox
 	sudo systemctl start trackbox
+
+uninstall-service:
+	sudo systemctl stop trackbox
+	sudo systemctl disable trackbox
+	sudo rm /etc/systemd/system/trackbox.service
+	sudo systemctl daemon-reload
 
 deploy:
 	rsync -avz --files-from=<(git ls-files) . $(PI_HOST):$(PI_DEST)
