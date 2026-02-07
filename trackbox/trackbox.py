@@ -1,3 +1,5 @@
+import sys
+
 from gpiozero import Button
 from time import sleep
 
@@ -15,9 +17,23 @@ switches = {
     0:  "YIELDING",  # GPIO0   (physical pin 27)
 }
 
+CLEAR_WIDTH = 20
+
+
+def read_switches(buttons):
+    for pin, btn in buttons.items():
+        if btn.is_pressed:
+            return switches[pin]
+    return None
+
+
+def display(word):
+    text = word or ""
+    sys.stdout.write(f"\r{text:<{CLEAR_WIDTH}}")
+    sys.stdout.flush()
+
 
 def main():
-    # Create Button objects (pull_up=True since common is on GND)
     buttons = {pin: Button(pin, pull_up=True) for pin in switches}
 
     print("Trackbox running... Press Ctrl+C to stop\n")
@@ -26,13 +42,10 @@ def main():
 
     try:
         while True:
-            current = None
-            for pin, btn in buttons.items():
-                if btn.is_pressed:
-                    current = switches[pin]
-                    break
+            current = read_switches(buttons)
 
             if current != last:
+                display(current)
                 last = current
 
             sleep(0.2)
