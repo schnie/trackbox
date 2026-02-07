@@ -7,7 +7,7 @@ name = "trackbox"
 version = "0.1.0"
 description = "Raspberry Pi GPIO switch reader for track conditions"
 requires-python = ">=3.9"
-dependencies = ["gpiozero"]
+dependencies = ["gpiozero", "luma.led_matrix"]
 
 [project.scripts]
 trackbox = "trackbox.trackbox:main"

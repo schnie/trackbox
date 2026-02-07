@@ -33,6 +33,27 @@ def read_switches(buttons):
     return None
 
 
+def init_led():
+    try:
+        from luma.core.interface.serial import spi, noop
+        from luma.led_matrix.device import max7219
+        serial = spi(port=0, device=0, gpio=noop())
+        return max7219(serial, cascaded=4, block_orientation=-90)
+    except Exception:
+        return None
+
+
+def display_led(device, word):
+    if device is None:
+        return
+    from luma.core.render import canvas
+    from luma.core.legacy import text
+    from luma.core.legacy.font import proportional, CP437_FONT
+    with canvas(device) as draw:
+        if word:
+            text(draw, (0, 0), word, fill="white", font=proportional(CP437_FONT))
+
+
 def display(word):
     text = word or ""
     if sys.stdout.isatty():
@@ -45,6 +66,7 @@ def display(word):
 
 def main():
     buttons = {pin: Button(pin, pull_up=True) for pin in switches}
+    led = init_led()
 
     is_tty = sys.stdout.isatty()
 
@@ -60,6 +82,7 @@ def main():
 
             if current != last:
                 display(current)
+                display_led(led, current)
                 last = current
 
             sleep(0.2)

@@ -10,7 +10,7 @@ WorkingDirectory=/run/trackbox
 Restart=on-failure
 RestartSec=5
 User=trackbox
-SupplementaryGroups=gpio
+SupplementaryGroups=gpio spi
 
 [Install]
 WantedBy=multi-user.target
