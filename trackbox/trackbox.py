@@ -1,3 +1,4 @@
+import os
 import sys
 
 from gpiozero import Button
@@ -18,6 +19,11 @@ switches = {
 }
 
 CLEAR_WIDTH = 20
+STATE_DIR = "/run/trackbox"
+STATE_FILE = os.path.join(STATE_DIR, "condition")
+
+HIDE_CURSOR = "\033[?25l"
+SHOW_CURSOR = "\033[?25h"
 
 
 def read_switches(buttons):
@@ -27,21 +33,24 @@ def read_switches(buttons):
     return None
 
 
-HIDE_CURSOR = "\033[?25l"
-SHOW_CURSOR = "\033[?25h"
-
-
 def display(word):
     text = word or ""
-    sys.stdout.write(f"\r{text:<{CLEAR_WIDTH}}")
-    sys.stdout.flush()
+    if sys.stdout.isatty():
+        sys.stdout.write(f"\r{text:<{CLEAR_WIDTH}}")
+        sys.stdout.flush()
+    if os.path.isdir(STATE_DIR):
+        with open(STATE_FILE, "w") as f:
+            f.write(text + "\n")
 
 
 def main():
     buttons = {pin: Button(pin, pull_up=True) for pin in switches}
 
-    print("Trackbox running... Press Ctrl+C to stop\n")
-    sys.stdout.write(HIDE_CURSOR)
+    is_tty = sys.stdout.isatty()
+
+    if is_tty:
+        print("Trackbox running... Press Ctrl+C to stop\n")
+        sys.stdout.write(HIDE_CURSOR)
 
     last = None
 
@@ -55,5 +64,6 @@ def main():
 
             sleep(0.2)
     except KeyboardInterrupt:
-        sys.stdout.write(SHOW_CURSOR)
-        print("\nStopped.")
+        if is_tty:
+            sys.stdout.write(SHOW_CURSOR)
+            print("\nStopped.")

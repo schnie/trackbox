@@ -6,16 +6,17 @@ PI_DEST := ~/trackbox
 .PHONY: install uninstall install-service uninstall-service deploy dev clean run
 
 install:
-	sudo pip install --break-system-packages --root-user-action=ignore --no-cache-dir --force-reinstall .
+	sudo pip install --break-system-packages --root-user-action=ignore --no-cache-dir --force-reinstall --no-deps .
 
 uninstall:
 	sudo pip uninstall --break-system-packages --root-user-action=ignore -y trackbox
 
-install-service:
+install-service: install
+	sudo usermod -aG gpio trackbox
 	sudo cp trackbox.service /etc/systemd/system/
 	sudo systemctl daemon-reload
 	sudo systemctl enable trackbox
-	sudo systemctl start trackbox
+	sudo systemctl restart trackbox
 
 uninstall-service:
 	sudo systemctl stop trackbox

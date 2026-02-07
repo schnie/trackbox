@@ -5,9 +5,12 @@ After=multi-user.target
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/trackbox
+RuntimeDirectory=trackbox
+WorkingDirectory=/run/trackbox
 Restart=on-failure
 RestartSec=5
 User=trackbox
+SupplementaryGroups=gpio
 
 [Install]
 WantedBy=multi-user.target
