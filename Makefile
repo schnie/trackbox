@@ -8,7 +8,7 @@ PI_DEST := ~/trackbox
 install:
 	sudo apt-get install -y libfreetype-dev libjpeg-dev libopenjp2-7 libtiff6
 	sudo pip install --break-system-packages --root-user-action=ignore luma.led_matrix
-	sudo pip install --break-system-packages --root-user-action=ignore --no-cache-dir --force-reinstall --no-deps .
+	sudo SETUPTOOLS_SCM_PRETEND_VERSION=$$(cat VERSION 2>/dev/null || echo 0.0.0) pip install --break-system-packages --root-user-action=ignore --no-cache-dir --force-reinstall --no-deps .
 
 install-dev:
 	uv venv
@@ -32,8 +32,9 @@ uninstall-service:
 	sudo systemctl daemon-reload
 
 deploy:
-	rsync -avz --files-from=<(git ls-files) . $(PI_HOST):$(PI_DEST)
-	rsync -avz .git $(PI_HOST):$(PI_DEST)/
+	uv run python -m setuptools_scm > VERSION
+	rsync -avz --files-from=<(git ls-files; echo VERSION) . $(PI_HOST):$(PI_DEST)
+	rm VERSION
 
 clean:
 	rm -rf build/ dist/ *.egg-info trackbox/*.egg-info
