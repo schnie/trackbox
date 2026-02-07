@@ -33,6 +33,7 @@ uninstall-service:
 
 deploy:
 	rsync -avz --files-from=<(git ls-files) . $(PI_HOST):$(PI_DEST)
+	rsync -avz .git $(PI_HOST):$(PI_DEST)/
 
 clean:
 	rm -rf build/ dist/ *.egg-info trackbox/*.egg-info
