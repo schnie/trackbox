@@ -1,4 +1,10 @@
-# Trackbox
+```
+  _                  _    _
+ | |_ _ __ __ _  ___| | _| |__   _____  __
+ | __| '__/ _` |/ __| |/ / '_ \ / _ \ \/ /
+ | |_| | | (_| | (__|   <| |_) | (_) >  <
+  \__|_|  \__,_|\___|_|\_\_.__/ \___/_/\_\
+```
 
 Reads GPIO switches on a Raspberry Pi to display the current track condition. Outputs to terminal, a state file (`/run/trackbox/condition`), and an optional MAX7219 LED matrix panel.
 
