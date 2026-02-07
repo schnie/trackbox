@@ -27,6 +27,10 @@ def read_switches(buttons):
     return None
 
 
+HIDE_CURSOR = "\033[?25l"
+SHOW_CURSOR = "\033[?25h"
+
+
 def display(word):
     text = word or ""
     sys.stdout.write(f"\r{text:<{CLEAR_WIDTH}}")
@@ -37,6 +41,7 @@ def main():
     buttons = {pin: Button(pin, pull_up=True) for pin in switches}
 
     print("Trackbox running... Press Ctrl+C to stop\n")
+    sys.stdout.write(HIDE_CURSOR)
 
     last = None
 
@@ -50,4 +55,5 @@ def main():
 
             sleep(0.2)
     except KeyboardInterrupt:
+        sys.stdout.write(SHOW_CURSOR)
         print("\nStopped.")
