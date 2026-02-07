@@ -3,7 +3,7 @@ SHELL := /bin/bash
 PI_HOST := trackbox@trackbox
 PI_DEST := ~/trackbox
 
-.PHONY: install uninstall install-service uninstall-service deploy dev clean run
+.PHONY: install uninstall install-service uninstall-service deploy dev clean run watch watch-remote
 
 install:
 	sudo pip install --break-system-packages --root-user-action=ignore --no-cache-dir --force-reinstall --no-deps .
@@ -36,3 +36,9 @@ dev:
 
 run:
 	trackbox
+
+watch:
+	watch -n 0.2 cat /run/trackbox/condition
+
+watch-remote:
+	watch -n 0.2 ssh $(PI_HOST) cat /run/trackbox/condition
