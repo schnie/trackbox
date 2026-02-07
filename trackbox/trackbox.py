@@ -33,7 +33,6 @@ def main():
                     break
 
             if current != last:
-                print(current if current else "ready...")
                 last = current
 
             sleep(0.2)
