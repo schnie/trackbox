@@ -6,7 +6,7 @@ PI_DEST := ~/trackbox
 .PHONY: install uninstall install-service uninstall-service deploy dev clean run watch watch-remote
 
 install:
-	sudo apt-get install -y libfreetype6-dev libjpeg-dev libopenjp2-7 libtiff5
+	sudo apt-get install -y libfreetype-dev libjpeg-dev libopenjp2-7 libtiff6
 	sudo pip install --break-system-packages --root-user-action=ignore luma.led_matrix
 	sudo pip install --break-system-packages --root-user-action=ignore --no-cache-dir --force-reinstall --no-deps .
 
