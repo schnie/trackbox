@@ -9,5 +9,17 @@ description = "Raspberry Pi GPIO switch reader for track conditions"
 requires-python = ">=3.9"
 dependencies = ["gpiozero", "luma.led_matrix"]
 
+[project.optional-dependencies]
+dev = ["ruff", "bandit", "pre-commit"]
+
 [project.scripts]
 trackbox = "trackbox.trackbox:main"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.bandit]
+targets = ["trackbox"]

@@ -3,12 +3,17 @@ SHELL := /bin/bash
 PI_HOST := trackbox@trackbox
 PI_DEST := ~/trackbox
 
-.PHONY: install uninstall install-service uninstall-service deploy dev clean run watch watch-remote
+.PHONY: install install-dev uninstall install-service uninstall-service deploy dev clean run watch watch-remote lint
 
 install:
 	sudo apt-get install -y libfreetype-dev libjpeg-dev libopenjp2-7 libtiff6
 	sudo pip install --break-system-packages --root-user-action=ignore luma.led_matrix
 	sudo pip install --break-system-packages --root-user-action=ignore --no-cache-dir --force-reinstall --no-deps .
+
+install-dev:
+	uv venv
+	uv pip install -e ".[dev]"
+	uv run pre-commit install
 
 uninstall:
 	sudo pip uninstall --break-system-packages --root-user-action=ignore -y trackbox
@@ -34,7 +39,7 @@ clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 
 dev:
-	GPIOZERO_PIN_FACTORY=mock trackbox
+	GPIOZERO_PIN_FACTORY=mock uv run python -m trackbox
 
 run:
 	trackbox
@@ -44,3 +49,8 @@ watch:
 
 watch-remote:
 	watch -n 0.2 ssh $(PI_HOST) cat /run/trackbox/condition
+
+lint:
+	uv run ruff check trackbox/
+	uv run ruff format --check trackbox/
+	uv run bandit -r trackbox/
