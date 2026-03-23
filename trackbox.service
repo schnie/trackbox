@@ -11,6 +11,7 @@ Restart=on-failure
 RestartSec=5
 User=trackbox
 SupplementaryGroups=gpio spi
+Environment=TRACKBOX_PANELS=1
 
 [Install]
 WantedBy=multi-user.target

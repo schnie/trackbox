@@ -1,3 +1,4 @@
+import os
 import sys
 from threading import Thread
 from time import sleep
@@ -8,7 +9,7 @@ from trackbox.widgets.clock import ClockWidget
 from trackbox.widgets.odds import OddsWidget
 
 PANEL_WIDTH = 32        # pixels per 4-module panel
-NUM_PANELS = 15
+NUM_PANELS = int(os.environ.get("TRACKBOX_PANELS", 15))
 MODULES_PER_PANEL = 4
 
 HIDE_CURSOR = "\033[?25l"

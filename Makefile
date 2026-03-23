@@ -41,7 +41,7 @@ clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 
 dev:
-	GPIOZERO_PIN_FACTORY=mock uv run python -m trackbox
+	GPIOZERO_PIN_FACTORY=mock TRACKBOX_PANELS=1 uv run python -m trackbox
 
 run:
 	trackbox
